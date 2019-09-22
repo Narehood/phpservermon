@@ -1,10 +1,6 @@
 PHP Server Monitor
 ==================
 
-.. image:: https://badges.gitter.im/Join%20Chat.svg
-   :alt: Join the chat at https://gitter.im/erickrf/nlpnet
-   :target: https://gitter.im/phpservermon/phpservermon
-
 Version 3.4.1 (Updated design!)
 
 
