@@ -44,7 +44,7 @@ $sm_lang = array(
 		'no' => 'Non',
 		'insert' => 'Nouveau',
 		'add_new' => 'Nouveau',
-		'update_available' => 'Une nouvelle version ({version}) est disponible à l\'adresse <a href="http://www.phpservermonitor.org" target="_blank">http://www.phpservermonitor.org</a>.',
+		'update_available' => 'Une nouvelle version ({version}) est disponible à l\'adresse <a href="https://github.com/phpservermon/phpservermon/releases/latest" target="_blank" rel="noopener">http://www.phpservermonitor.org</a>.',
 		'back_to_top' => 'Haut de page',
 		'go_back' => 'Retour',
 		'ok' => 'OK',
@@ -61,6 +61,18 @@ $sm_lang = array(
 		'a_minute_ago' => 'Il y a une minute',
 		'seconds_ago' => 'Il y a %d secondes',
 		'a_second_ago' => 'Il y a une seconde',
+		'year' => 'année',
+		'years' => 'années',
+		'month' => 'mois',
+		'months' => 'mois',
+		'day' => 'jour',
+		'days' => 'jours',
+		'hour' => 'heure',
+		'hours' => 'heures',
+		'minute' => 'minute',
+		'minutes' => 'minutes',
+		'second' => 'seconde',
+		'seconds' => 'secondes',
 	),
 	'menu' => array(
 		'config' => 'Configuration',
@@ -81,7 +93,7 @@ $sm_lang = array(
 		'level' => 'Niveau',
 		'level_10' => 'Administrateur',
 		'level_20' => 'Utilisateur',
-		'level_description' => 'Les <b>Administrateurs</b> ont un accès total. Ils peuvent gérer les serveurs, les utilisateurs et éditer la configuration globale.<br/>Les <b>Utilisateurs</b> ne peuvent que voir et mettre à jour les serveurs qui leur ont été assignés.',
+		'level_description' => 'Les <b>Administrateurs</b> ont un accès total. Ils peuvent gérer les serveurs, les utilisateurs et éditer la configuration globale.<br>Les <b>Utilisateurs</b> ne peuvent que voir et mettre à jour les serveurs qui leur ont été assignés.',
 		'mobile' => 'Téléphone',
 		'email' => 'Email',
 		'pushover' => 'Pushover',
@@ -97,7 +109,7 @@ $sm_lang = array(
 		'profile' => 'Profil',
 		'profile_updated' => 'Votre profil a été mis à jour.',
 		'error_user_name_bad_length' => 'Le nom d\'utilisateur doit avoir entre 2 et 64 caractères.',
-		'error_user_name_invalid' => 'Le nom d\'utilisateur ne peut contenir que des caractères alphabétiques (a-z, A-Z), des chiffres (0-9) ou underscore (_).',
+		'error_user_name_invalid' => 'Le nom d\'utilisateur ne peut contenir que des caractères alphabétiques (a-z, A-Z), des chiffres (0-9), points (.) ou underscore (_).',
 		'error_user_name_exists' => 'Ce nom d\'utilisateur existe déjà.',
 		'error_user_email_bad_length' => 'L\'adresse email doit avoir entre 5 et 255 caractères.',
 		'error_user_email_invalid' => 'L\'adresse email n\'est pas valide.',
@@ -114,6 +126,9 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'pushover' => 'Pushover',
 		'no_logs' => 'Aucun événement',
+		'clear' => 'Claire registros',
+		'delete_title' => 'Supprimer journaux',
+		'delete_message' => 'Êtes-vous sûr de vouloir supprimer <b>tous</b> les journaux?',
 	),
 	'servers' => array(
 		'server' => 'Serveur',
@@ -130,6 +145,7 @@ $sm_lang = array(
 		'pattern_description' => 'Si ce texte n\'est par retrouvé sur le site web, le serveur est marqué hors-service. Les expressions réguliaires sont autorisées.',
 		'last_check' => 'Dernière vérification',
 		'last_online' => 'Dernière fois OK',
+		'last_offline' => 'Dernière fois hors-ligne',
 		'monitoring' => 'Surveillé',
 		'no_monitoring' => 'Non surveillé',
 		'email' => 'Email',
@@ -137,7 +153,7 @@ $sm_lang = array(
 		'sms' => 'SMS',
 		'send_sms' => 'Envoyer un SMS',
 		'pushover' => 'Pushover',
-		'users' => 'Users',
+		'users' => 'Utilisateurs',
 		'delete_title' => 'Supprimer un serveur',
 		'delete_message' => 'Êtes-vous sûr de vouloir supprimer le serveur \'%1\' ?',
 		'deleted' => 'Serveur supprimé.',
@@ -183,25 +199,13 @@ $sm_lang = array(
 		'email_smtp' => 'Utiliser un serveur SMTP',
 		'email_smtp_host' => 'Adresse serveur SMTP',
 		'email_smtp_port' => 'Port SMTP',
-		'email_smtp_security' => 'SMTP security',
-		'email_smtp_security_none' => 'None',
+		'email_smtp_security' => 'Sécurité SMTP',
+		'email_smtp_security_none' => 'Aucune',
 		'email_smtp_username' => 'Nom utilisateur SMTP',
 		'email_smtp_password' => 'Mot de passe SMTP',
 		'email_smtp_noauth' => 'Laisser vide si pas d\'authentication',
 		'sms_status' => 'Autoriser l\'envoi de SMS',
 		'sms_gateway' => 'Passerelle à utiliser pour l\'envoi de SMS',
-		'sms_gateway_mosms' => 'Mosms',
-		'sms_gateway_mollie' => 'Mollie',
-		'sms_gateway_spryng' => 'Spryng',
-		'sms_gateway_inetworx' => 'Inetworx',
-		'sms_gateway_clickatell' => 'Clickatell',
-        'sms_gateway_textmarketer' => 'Textmarketer',
-		'sms_gateway_smsglobal' => 'SMSGlobal',
-		'sms_gateway_octopush' => 'Octopush',
-		'sms_gateway_smsit' => 'Smsit',
-		'sms_gateway_freevoipdeal' => 'FreeVoipDeal',
-		'sms_gateway_nexmo' => 'Nexmo',
-		'sms_gateway_freemobilesms' => 'FreeMobileSMS',
 		'sms_gateway_username' => 'Nom utilisateur de la passerelle',
 		'sms_gateway_password' => 'Mot de passe de la passerelle',
 		'sms_from' => 'SMS de l\'expéditeur',
@@ -209,15 +213,15 @@ $sm_lang = array(
 		'pushover_description' => 'Pushover est un service qui simplifie les notifications en temps réel. Voir <a href="https://pushover.net/">leur site web</a> pour plus d\'informations.',
 		'pushover_clone_app' => 'Cliquez ici pour créer votre application Pushover',
 		'pushover_api_token' => 'Jeton application Pushover',
-		'pushover_api_token_description' => 'Avant de pouvoir utiliser Pushover, vous devez <a href="%1$s" target="_blank">créer une application</a> sur leur site web et entrer ici le jeton (Token) de l\'application.',
+		'pushover_api_token_description' => 'Avant de pouvoir utiliser Pushover, vous devez <a href="%1$s" target="_blank" rel="noopener">créer une application</a> sur leur site web et entrer ici le jeton (Token) de l\'application.',
 		'alert_type' => 'Choisissez quand vous souhaitez être notifié',
 		'alert_type_description' => '<b>Changement d\'état : </b>'.
-			'Vous recevez une notification chaque fois que le serveur change d\'état. C\'est-à-dire passe de l\'état OK à HORS SERVICE ou de HORS SERVICE à OK.<br/>'.
-			 '<br/><b>Hors service : </b>'.
+			'Vous recevez une notification chaque fois que le serveur change d\'état. C\'est-à-dire passe de l\'état OK à HORS SERVICE ou de HORS SERVICE à OK.<br>'.
+			 '<br><b>Hors service : </b>'.
 			'Vous ne recevez une notification que quand le serveur passe de l\'état OK à HORS SERVICE. Par exemple, '.
 			'Votre tâche planifiée s\'exécute toutes les 15 minutes et votre serveur passe à l\'état HORS SERVICE à 1 heure du matin et le reste jusqu\'à 6 heures du matin.'.
-			'Vous ne recevez qu\'une seule notification à 1 heure du matin.<br/>'.
-			'<br/><b>Toujours : </b>'.
+			'Vous ne recevez qu\'une seule notification à 1 heure du matin.<br>'.
+			'<br><b>Toujours : </b>'.
 			'Vous recevez une notification à chaque exécution de la tâche planifiée si le serveur est à l\'état HORS SERVICE ',
 		'alert_type_status' => 'Changement d\'état',
 		'alert_type_offline' => 'Hors service',
@@ -238,7 +242,7 @@ $sm_lang = array(
 		'settings_log' => 'Configuration des événements',
 		'auto_refresh' => 'Auto-rachaîchissement',
 		'auto_refresh_servers' =>
-			'Auto-rachaîchissement de la page serveurs.<br/>'.
+			'Auto-rachaîchissement de la page serveurs.<br>'.
 			'<span class="small">'.
 			'Temps en secondes. Si 0, la page n\'est pas rafraîchie.'.
 			'</span>',
@@ -253,7 +257,7 @@ $sm_lang = array(
 		'email_sent' => 'Email envoyé',
 		'email_error' => 'Erreur lors de l\'envoi de l\'email',
 		'sms_sent' => 'Sms envoyé',
-		'sms_error' => 'Erreur lors de l\'envoi du SMS',
+		'sms_error' => 'Erreur lors de l\'envoi du SMS. %s',
 		'sms_error_nomobile' => 'Impossible d\'envoyer un SMS de test: aucun numéro de téléphone défini dans votre profil.',
 		'pushover_sent' => 'Notification Pushover envoyée',
 		'pushover_error' => 'Une erreur s\'est produite lors de l\'envoi de la notification Pushover : %s',
@@ -263,18 +267,18 @@ $sm_lang = array(
 		'log_retention_period_description' => 'Nombre de jours de conservation des événements envoyés et des temps de réponse des serveurs. Entrez 0 pour les conserver indéfiniment.',
 		'log_retention_days' => 'jours',
 	),
-	// for newlines in the email messages use <br/>
+	// for newlines in the email messages use <br>
 	'notifications' => array(
 		'off_sms' => 'Le Serveur \'%LABEL%\' est HORS SERVICE: IP=%IP%, Port=%PORT%. Erreur=%ERROR%',
 		'off_email_subject' => 'IMPORTANT: Le Serveur \'%LABEL%\' est HORS SERVICE',
-		'off_email_body' => "Impossible de se connecter au serveur suivant:<br/><br/>Serveur: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Erreur: %ERROR%<br/>Date: %DATE%",
+		'off_email_body' => "Impossible de se connecter au serveur suivant:<br><br>Serveur: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Erreur: %ERROR%<br>Date: %DATE%",
 		'off_pushover_title' => 'Le Serveur \'%LABEL%\' est HORS SERVICE',
-		'off_pushover_message' => "Impossible de se connecter au serveur suivant:<br/><br/>Serveur: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Erreur: %ERROR%<br/>Date: %DATE%",
-		'on_sms' => 'Le Serveur \'%LABEL%\' est OK: IP=%IP%, Port=%PORT%',
+		'off_pushover_message' => "Impossible de se connecter au serveur suivant:<br><br>Serveur: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Erreur: %ERROR%<br>Date: %DATE%",
+		'on_sms' => 'Le Serveur \'%LABEL%\' est OK: IP=%IP%, Port=%PORT%, il était hors-ligne pendant %LAST_OFFLINE_DURATION%',
 		'on_email_subject' => 'IMPORTANT: Le Serveur \'%LABEL%\' est OK',
-		'on_email_body' => "Le Serveur '%LABEL%' est de nouveau OK:<br/><br/>Serveur: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_email_body' => "Le Serveur '%LABEL%' est de nouveau OK, il était hors-ligne pendant %LAST_OFFLINE_DURATION%:<br><br>Serveur: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date: %DATE%",
 		'on_pushover_title' => 'Le Serveur \'%LABEL%\' est OK',
-		'on_pushover_message' => "Le Serveur '%LABEL%' est de nouveau OK:<br/><br/>Serveur: %LABEL%<br/>IP: %IP%<br/>Port: %PORT%<br/>Date: %DATE%",
+		'on_pushover_message' => "Le Serveur '%LABEL%' est de nouveau OK, il était hors-ligne pendant %LAST_OFFLINE_DURATION%:<br><br>Serveur: %LABEL%<br>IP: %IP%<br>Port: %PORT%<br>Date: %DATE%",
 	),
 	'login' => array(
 		'welcome_usermenu' => 'Bonjour %user_name%',
@@ -291,7 +295,7 @@ $sm_lang = array(
 		'password_forgot' => 'Mot de passe oublié ?',
 		'password_reset' => 'Réinitialiser le mot de passe',
 		'password_reset_email_subject' => 'Réinitialisation du mot de passe pour PHP Server Monitor',
-		'password_reset_email_body' => 'Cliquez sur le lien ci-dessous pour réinitialiser votre mot de passe. Veuillez noter qu\'il expire dans une heure.<br/><br/>%link%',
+		'password_reset_email_body' => 'Cliquez sur le lien ci-dessous pour réinitialiser votre mot de passe. Veuillez noter qu\'il expire dans une heure.<br><br>%link%',
 		'error_user_incorrect' => 'Nom d\'utilisateur invalide.',
 		'error_login_incorrect' => 'Informations incorrectes.',
 		'error_login_passwords_nomatch' => 'Mot de passe invalide.',

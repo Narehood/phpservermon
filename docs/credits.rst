@@ -12,11 +12,15 @@ The following people have contributed to the development of PHP Server Monitor:
 
 * Pepijn Over - https://github.com/dopeh
 
-  * Creator and project maintainer
+  * Creator
 
 * Samuel Denis-D'Ortun - https://github.com/sadortun
 
- * Project developer
+  * Project developer
+ 
+* Tim Zandbergen - https://github.com/TimZ99
+
+  * Project developer & maintainer
 
 * Jérôme Cabanis - https://github.com/Abawell
 
@@ -24,6 +28,11 @@ The following people have contributed to the development of PHP Server Monitor:
   * Date localization
   * Mobile compatibility
   * Various fixes and improvements
+
+* Ward Pieters - https://github.com/WardPieters
+
+  * GatewayAPI, Plivo, Callr and SolutionsInfini SMS Gateway
+  * Other SMS Gateways rewritten
 
 * Perri Vardy-Mason - https://github.com/VeoPVM
 
@@ -119,6 +128,11 @@ The following people have contributed to the translation of PHP Server Monitor:
 
   * Marco Gargani
 
+* Japanese
+
+  * Vus520 - https://github.com/vus520
+  * Rht0910 - https://github.com/rht0910
+
 * Korean
 
   * Ik-Jun
@@ -139,6 +153,7 @@ The following people have contributed to the translation of PHP Server Monitor:
 
   * Roman Beylin - https://github.com/roman-beylin
   * Yuriy Lyutov - https://github.com/delysh
+  * Alexell - https://github.com/Alexell
 
 * Spanish
 
@@ -153,6 +168,10 @@ The following people have contributed to the translation of PHP Server Monitor:
 * Turkish
 
   * Haydar Kulekci - https://github.com/hkulekci
+  
+* Catalan
+ 
+  * caos30 - https://github.com/caos30
 
 
 Vendors
@@ -160,9 +179,13 @@ Vendors
 
 The following libraries are being used by PHP Server Monitor:
 
-* jqPlot - http://www.jqplot.com
+* Chart.js - http://chartjs.org/
 * Twitter Bootstrap - http://getbootstrap.com
-* Bootstrap Multiselect - https://github.com/davidstutz/bootstrap-multiselect
+* jQuery - https://jquery.com
+* Font Awesome - https://fontawesome.com
+* Twig - https://twig.symfony.com
+* Bootstrap-select - https://github.com/snapappointments/bootstrap-select
 * PHP Mailer - https://github.com/PHPMailer/PHPMailer
-* php-pushover - https://github.com/kryap/php-pushover
-* Twig - http://twig.sensiolabs.org
+* PHP-Pushover - https://github.com/kryap/php-pushover
+* Symfony - https://symfony.com
+* Random_compat - https://github.com/paragonie/random_compat
