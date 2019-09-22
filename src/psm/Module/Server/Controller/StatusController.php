@@ -43,7 +43,6 @@ class StatusController extends AbstractServerController {
 
 	/**
 	 * Prepare the template to show a list of all servers
-	 * @todo move the background colurs to the config
 	 */
 	protected function executeIndex() {
 		// set background color to black
@@ -53,11 +52,17 @@ class StatusController extends AbstractServerController {
 		// add header accessories
 		$layout = $this->getUser()->getUserPref('status_layout', 0);
 		$layout_data = array(
+			'label_none' => psm_get_lang('system', 'none'),
 			'label_last_check' => psm_get_lang('servers', 'last_check'),
 			'label_last_online' => psm_get_lang('servers', 'last_online'),
+			'label_last_offline' => psm_get_lang('servers', 'last_offline'),
+			'label_online' => psm_get_lang('servers', 'online'),
+			'label_offline' => psm_get_lang('servers', 'offline'),
 			'label_rtime' => psm_get_lang('servers', 'latency'),
-			'block_layout_active'	=> ($layout == 0) ? 'active' : '',
-			'list_layout_active'	=> ($layout != 0) ? 'active' : '',
+			'block_layout_active' => ($layout == 0) ? 'active' : '',
+			'list_layout_active' => ($layout != 0) ? 'active' : '',
+			'label_add_server' => psm_get_lang('system', 'add_new'),
+			'url_save' => psm_build_url(array('mod' => 'server', 'action' => 'edit')),
 		);
 		$this->setHeaderAccessories($this->twig->render('module/server/status/header.tpl.html', $layout_data));
 
@@ -70,16 +75,21 @@ class StatusController extends AbstractServerController {
 		$layout_data['servers_online'] = array();
 
 		foreach ($servers as $server) {
-			if($server['active'] == 'no') {
+			if ($server['active'] == 'no') {
 				continue;
 			}
 			$server['last_checked_nice'] = psm_timespan($server['last_check']);
 			$server['last_online_nice'] = psm_timespan($server['last_online']);
+			$server['last_offline_nice'] = psm_timespan($server['last_offline']);
+			$server['last_offline_duration_nice'] = "";
+			if ($server['last_offline_nice'] != psm_get_lang('system', 'never')) {
+				$server['last_offline_duration_nice'] = "(".$server['last_offline_duration'].")";
+			}
 			$server['url_view'] = psm_build_url(array('mod' => 'server', 'action' => 'view', 'id' => $server['server_id'], 'back_to' => 'server_status'));
 
 			if ($server['status'] == "off") {
 				$layout_data['servers_offline'][] = $server;
-			} elseif($server['warning_threshold_counter'] > 0) {
+			} elseif ($server['warning_threshold_counter'] > 0) {
 				$server['class_warning'] = 'warning';
 				$layout_data['servers_offline'][] = $server;
 			} else {
@@ -88,12 +98,12 @@ class StatusController extends AbstractServerController {
 		}
 
 		$auto_refresh_seconds = psm_get_conf('auto_refresh_servers');
-		if(intval($auto_refresh_seconds) > 0) {
+		if (intval($auto_refresh_seconds) > 0) {
 			$this->twig->addGlobal('auto_refresh', true);
 			$this->twig->addGlobal('auto_refresh_seconds', $auto_refresh_seconds);
 		}
 
-		if($this->isXHR() || isset($_SERVER["HTTP_X_REQUESTED_WITH"])) {
+		if ($this->isXHR() || isset($_SERVER["HTTP_X_REQUESTED_WITH"])) {
 			$this->xhr = true;
 			//disable auto refresh in ajax return html
 			$layout_data["auto_refresh"] = 0;
@@ -103,7 +113,7 @@ class StatusController extends AbstractServerController {
 	}
 
 	protected function executeSaveLayout() {
-		if($this->isXHR()) {
+		if ($this->isXHR()) {
 			$layout = psm_POST('layout', 0);
 			$this->getUser()->setUserPref('status_layout', $layout);
 

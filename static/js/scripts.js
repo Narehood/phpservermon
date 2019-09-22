@@ -1,4 +1,4 @@
-$().ready(function() {
+$().ready(function () {
 	$('.show-modal').click(function (e) {
 		var $this = $(this);
 		if ($this.is('a')) {
@@ -6,19 +6,18 @@ $().ready(function() {
 		}
 		var $modal_id = $this.attr('data-modal-id') || 'main';
 		var $modal = $('#' + $modal_id + 'Modal');
-		if($modal.length) {
+		if ($modal.length) {
 			$modal.find('.modalOKButton').data('modal-origin', $this);
 
 			var param = $this.attr('data-modal-param');
-			if(param) {
+			if (param) {
 				var ary = param.split(',');
 				for (var index = 0; index < ary.length && index < 9; ++index) {
 					var value = ary[index];
-					$($modal).find('span.modalP' + (index+1)).text(value);
+					$($modal).find('span.modalP' + (index + 1)).text(value);
 				}
 			}
-			scroll(0, 0);
-			$modal.modal('show');
+			$modal.modal();
 		} else {
 			// Just in case we forgot the dialog box
 			var conf = confirm("Are you sure?");
@@ -29,9 +28,8 @@ $().ready(function() {
 		return false;
 	});
 
-	$('.modalOKButton').click(function(e) {
-		var $this = $(this);
-		var $origin = $this.data('modal-origin');
+	$('.modalOKButton').click(function (e) {
+		var $origin = $(this).data('modal-origin');
 		if ($origin.is('a')) {
 			window.location = $origin.attr('href');
 		} else {
@@ -40,88 +38,80 @@ $().ready(function() {
 		}
 		return false;
 	});
-	$('select.multiselect').multiselect({
-		includeSelectAllOption: true,
-		maxHeight: 400,
-		enableCaseInsensitiveFiltering: true
-	});
 
-	psm_flash_message();
-	psm_tooltips();
-
-	// popularPorts
-    // initial
-    $('.portGroup').hide();
-    var portInput = $('#port').val();
-
-    if (portInput != '') {
-        var findPopularPorts = $('#popularPorts').find('option[value=' + portInput + ']');
-        if(findPopularPorts.length) {
-            $(findPopularPorts).attr("selected", "selected");
-        } else {
-            $('#popularPorts').find('option[value=custom]').attr("selected", "selected");
-            $('.portGroup').slideDown();
-        }
-    }
-
-	$('#popularPorts').change(function () {
-		changePopularPorts($(this).val(), false, $('#type').val());
-	});
-
-	// server type
-	$('.types').hide();
-	changeTypeSwitch($('#type').val());
-
-	$('#type').change(function () {
-		changeTypeSwitch($('#type').val());
-		changePopularPorts($('#popularPorts').val(), true, $('#type').val());
-	});
+	if ($('#list-layout').length > 0) {
+		$("#list-layout").hide();
+		$("#flow-layout").hide();
+		if ($("#list-layout").hasClass('active')) {
+			$("#list-layout").show();
+		}
+		if ($("#flow-layout").hasClass('active')) {
+			$("#flow-layout").show();
+		}
+	}
+	$('#label').focus();
 });
-
-function changeTypeSwitch(typeInput) {
-	switch (typeInput) {
-		case 'service':
-			$('.types').slideUp();
-			$('.typeService').slideDown();
-			break;
-
-		case 'website':
-			$('.types').slideUp();
+$("#type").change(function () {
+	switch ($("select#type option:checked").val()) {
+		case "website":
+			$('.typeService').slideUp();
 			$('.typeWebsite').slideDown();
+			$("select#popular_request_methods").change();
 			break;
-
+		case "service":
+			$('.typeWebsite').slideUp();
+			$('.typeService').slideDown();
+			$("select#popular_ports").change();
+			break;
 		default:
-			$('.types').hide();
+			$('.types').slideUp();
 	}
-}
+}).change();
 
-function changePopularPorts(popularPorts, changeType, typeInput) {
-	if (changeType === true) {
-		if (typeInput == 'service') {
-			if (popularPorts == 'custom') {
-				$('.portGroup').slideDown();
-			} else {
-				$('.portGroup').hide();
-			}
-		}
-	} else {
-		if (popularPorts == 'custom') {
-			$('.portGroup').slideDown();
-		} else {
-			$('#port').val(popularPorts);
-			$('.portGroup').slideUp();
-		}
+$("select#popular_request_methods").change(function () {
+	if ($("select#type option:checked").val() != "website") return;
+	switch ($("select#popular_request_methods option:checked").val()) {
+		case "":
+			$('.requestMethod').slideUp();
+			$('#request_method').val($("select#popular_request_methods option:checked").val());
+			break;
+		case "custom":
+			$('.requestMethod').slideDown();
+			$('#request_method').focus();
+			break;
+		default:
+			$('#request_method').val($("select#popular_request_methods option:checked").val());
+			$('.requestMethod').slideUp();
 	}
-}
+}).change();
+
+$("select#popular_ports").change(function () {
+	if ($("select#type option:checked").val() != "service") return;
+	switch ($("select#popular_ports option:checked").val()) {
+		case "0":
+		case "":
+			$('#port').val($("select#popular_ports option:checked").val());
+			$('.port').slideUp();
+			break;
+		case "custom":
+			$('.port').slideDown();
+			$('#port').focus();
+			break;
+		default:
+			$('#port').val($("select#popular_ports option:checked").val());
+			$('.port').slideUp();
+	}
+}).change();
+
 
 function psm_xhr(mod, params, method, on_complete, options) {
-	method = (typeof method == 'undefined') ? 'GET' : method;
+	method = (typeof method === 'undefined') ? 'GET' : method;
 
 	var xhr_options = {
 		data: params,
 		type: method,
 		success: on_complete,
-		error: function(jqjqXHR, textStatus, errorThrown) {
+		error: function (jqjqXHR, textStatus, errorThrown) {
 			psm_flash_message(errorThrown);
 		}
 	};
@@ -133,6 +123,19 @@ function psm_xhr(mod, params, method, on_complete, options) {
 }
 
 function psm_saveLayout(layout) {
+	if (layout) {
+		$("#list-layout").show();
+		$("#flow-layout").hide();
+		$("#block-layout").removeClass('active');
+		$("#table-layout").addClass('active');
+	} else {
+		$("#list-layout").hide();
+		$("#flow-layout").show();
+		$("#block-layout").addClass('active');
+		$("#table-layout").removeClass('active');
+	}
+
+
 	var params = {
 		action: 'saveLayout',
 		csrf: $("input[name=saveLayout_csrf]").val(),
@@ -141,47 +144,19 @@ function psm_saveLayout(layout) {
 	psm_xhr('server_status', params, 'POST');
 }
 
-function psm_tooltips() {
-	$('input[data-toggle="tooltip"]').tooltip({
-		'trigger':'hover',
-		'placement': 'right',
-		'container': 'body'
-	});
-	$('i[data-toggle="tooltip"]').tooltip({
-		'trigger':'hover',
-		'placement': 'bottom'
-	});
+if ($(".search_input").length > 0) {
+	$.getScript("static/js/search.js");
+	$('<link>')
+		.appendTo('head')
+		.attr({
+			type: 'text/css',
+			rel: 'stylesheet',
+			href: 'static/css/search.min.css'
+		});
 }
 
-function psm_goTo(url) {
-	window.location = url;
-}
-
-function trim(str) {
-    return str.replace(/^\s+|\s+$/g,"");
-}
-
-//left trim
-function ltrim(str) {
-	return str.replace(/^\s+/,"");
-}
-
-//right trim
-function rtrim(str) {
-	return str.replace(/\s+$/,"");
-}
-
-function psm_flash_message(message) {
-	var flashmessage = $('#flashmessage');
-	if(flashmessage.length){
-		if(typeof message != 'undefined') {
-			flashmessage.html(message);
-		}
-		var t = flashmessage.html();
-		var c = trim(t);
-		var t = c.replace('&nbsp;', '');
-		if(t){
-			flashmessage.slideDown();
-		}
-	}
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+             .register('./service-worker.js')
+             .then(function() { console.log('Service Worker Registered'); });
 }
