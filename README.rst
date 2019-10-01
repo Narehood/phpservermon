@@ -1,8 +1,6 @@
 PHP Server Monitor
 ==================
 
-Version 3.4.1 (Updated design!)
-
 
 PHP Server Monitor is a script that checks whether your websites and servers are up and running.
 It comes with a web based user interface where you can manage your services and websites,
