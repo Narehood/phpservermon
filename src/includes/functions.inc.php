@@ -354,7 +354,7 @@ function psm_parse_msg($status, $type, $vars, $combi = false) {
  * @return string cURL result
  */
 function psm_curl_get($href, $header = false, $body = true, $timeout = null, $add_agent = true, $website_username = false, $website_password = false, $request_method = null, $post_field = null) {
-	$timeout = $timeout == null ? PSM_CURL_TIMEOUT : intval($timeout);
+	($timeout === null || $timeout > 0) ? PSM_CURL_TIMEOUT : intval($timeout);
 
 	$ch = curl_init();
 	if(defined('PSM_DEBUG') && PSM_DEBUG === true && psm_is_cli()) {
@@ -479,14 +479,14 @@ function psm_update_available() {
 		// extract latest version from Github.
 		preg_match('/"tag_name":"[v](([\d][.][\d][.][\d])(-?\w*))"/', $latest, $latest);
 		// add latest version to database
-		if ($latest[2] !== false && strlen($latest[2]) < 15) {
+		if (!empty($latest) && strlen($latest[2]) < 15) {
 			psm_update_conf('version_update_check', $latest[2]);
 		}
 	} else {
 		$latest[2] = psm_get_conf('version_update_check');
 	}
 
-	if ($latest[2] !== false) {
+	if (!empty($latest)) {
 		$current = psm_get_conf('version');
 		return version_compare($latest[2], $current, '>');
 	} else {
