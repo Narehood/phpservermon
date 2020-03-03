@@ -178,7 +178,9 @@ class Installer
 					('show_update', '1'),
 					('last_update_check', '0'),
 					('cron_running', '0'),
-					('cron_running_time', '0');";
+					('cron_running_time', '0'), 
+					('cron_off_running', '0'),
+					('cron_off_running_time', '0');";
         $this->execSQL($queries);
     }
 
@@ -263,6 +265,8 @@ class Installer
 				`telegram` enum('yes','no') NOT NULL default 'yes',
 			    `warning_threshold` mediumint(1) unsigned NOT NULL DEFAULT '1',
 			    `warning_threshold_counter` mediumint(1) unsigned NOT NULL DEFAULT '0',
+                `ssl_cert_expiry_days` mediumint(1) unsigned NOT NULL DEFAULT '0',
+                `ssl_cert_expired_time` varchar(255) NULL,
 			    `timeout` smallint(1) unsigned NULL DEFAULT NULL,
 			    `website_username` varchar(255) DEFAULT NULL,
 				`website_password` varchar(255) DEFAULT NULL,
@@ -340,6 +344,12 @@ class Installer
         }
         if (version_compare($version_from, '3.4.2', '<')) {
             $this->upgrade342();
+        }
+        if (version_compare($version_from, '3.4.6-beta.1', '<')) {
+            $this->upgrade346();
+        }
+        if (version_compare($version_from, '3.4.6-beta.2', '<')) {
+            $this->upgrade346();
         }
         psm_update_conf('version', $version_to);
     }
@@ -653,6 +663,33 @@ class Installer
     {
         $queries = array();
         $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` CHANGE `last_output` `last_output` TEXT;";
+        $this->execSQL($queries);
+    }
+
+    /**
+     * Upgrade for v3.4.6 release
+     */
+    protected function upgrade346()
+    {
+        $queries = array();
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
+            ADD `ssl_cert_expiry_days` MEDIUMINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `warning_threshold_counter`";
+        $queries[] = "ALTER TABLE `" . PSM_DB_PREFIX . "servers` 
+            ADD `ssl_cert_expired_time` VARCHAR(255) NULL AFTER `ssl_cert_expiry_days`";
+            
+        if (
+            @psm_password_decrypt(
+                psm_get_conf('password_encrypt_key'),
+                psm_get_conf('email_smtp_password')
+            ) === false
+        ) {
+            // Prevents encrypting the password multiple times.
+            $queries[] = "UPDATE `" . PSM_DB_PREFIX . "config` 
+                SET `value` = '" .
+                psm_password_encrypt(psm_get_conf('password_encrypt_key'), psm_get_conf('email_smtp_password')) .
+                "' WHERE `key` = 'email_smtp_password'";
+            $this->log('SMTP password is now encrypted.');
+        }
         $this->execSQL($queries);
     }
 }

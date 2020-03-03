@@ -390,7 +390,7 @@ namespace {
  * @param string|bool $website_password Password website
  * @param string|null $request_method Request method like GET, POST etc.
  * @param string|null $post_field POST data
- * @return string cURL result
+ * @return array cURL result
  */
     function psm_curl_get(
         $href,
@@ -418,6 +418,7 @@ namespace {
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_ENCODING, '');
+        curl_setopt($ch, CURLOPT_CERTINFO, 1);
     
         if (!empty($request_method)) {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $request_method);
@@ -455,7 +456,9 @@ namespace {
             PSM_VERSION . '; +https://github.com/phpservermon/phpservermon)');
         }
 
-        $result = curl_exec($ch);
+        $result['exec'] = curl_exec($ch);
+        $result['info'] = curl_getinfo($ch);
+
         curl_close($ch);
     
         if (defined('PSM_DEBUG') && PSM_DEBUG === true && psm_is_cli()) {
@@ -552,22 +555,31 @@ namespace {
             // update last check date
             psm_update_conf('last_update_check', time());
             $latest = psm_curl_get(PSM_UPDATE_URL);
-            // extract latest version from Github.
-            preg_match('/"tag_name":"[v](([\d][.][\d][.][\d])(-?\w*))"/', $latest, $latest);
-            // add latest version to database
-            if (!empty($latest) && strlen($latest[2]) < 15) {
-                psm_update_conf('version_update_check', $latest[2]);
+            if ($latest['info'] === false || (int)$latest['info']['http_code'] >= 300) {
+                // error
+                return false;
             }
+            // extract latest version from Github.
+            $githubInfo = json_decode($latest['exec']);
+            if (property_exists($githubInfo, 'tag_name') === false) {
+                // version not found
+                return false;
+            }
+            $tagName = $githubInfo->tag_name;
+            $latestVersion = str_replace('v', '', $tagName);
+            // check from old version ... maybe has reason but I don't think so ...
+            if (empty($latestVersion) === true || strlen($latestVersion) >= 15) {
+                // weird version
+                return false;
+            }
+            // add latest version to database
+            psm_update_conf('version_update_check', $latestVersion);
         } else {
-            $latest[2] = psm_get_conf('version_update_check');
+            $latestVersion = psm_get_conf('version_update_check');
         }
 
-        if (!empty($latest)) {
-            $current = psm_get_conf('version');
-            return version_compare($latest[2], $current, '>');
-        } else {
-            return false;
-        }
+        $current = psm_get_conf('version');
+        return version_compare($latestVersion, $current, '>');
     }
 
 /**
@@ -592,7 +604,10 @@ namespace {
             $phpmailer->SMTPSecure = psm_get_conf('email_smtp_security');
 
             $smtp_user = psm_get_conf('email_smtp_username');
-            $smtp_pass = psm_get_conf('email_smtp_password');
+            $smtp_pass = psm_password_decrypt(
+                psm_get_conf('password_encrypt_key'),
+                psm_get_conf('email_smtp_password')
+            );
 
             if ($smtp_user != '' && $smtp_pass != '') {
                 $phpmailer->SMTPAuth = true;
@@ -893,15 +908,12 @@ namespace {
         $cipher = "AES-256-CBC";
         $ivlen = openssl_cipher_iv_length($cipher);
         $iv = substr($data, 0, $ivlen);
-        $decrypted = rtrim(
-            openssl_decrypt(
-                base64_encode(substr($data, $ivlen)),
-                $cipher,
-                hash('sha256', $key, true),
-                OPENSSL_ZERO_PADDING,
-                $iv
-            ),
-            "\0"
+        $decrypted = openssl_decrypt(
+            substr($data, $ivlen),
+            $cipher,
+            hash('sha256', $key, true),
+            OPENSSL_RAW_DATA,
+            $iv
         );
     
         return $decrypted;
